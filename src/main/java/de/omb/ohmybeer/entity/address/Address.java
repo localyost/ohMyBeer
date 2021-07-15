@@ -13,8 +13,10 @@ import javax.persistence.Entity;
 @Getter
 public class Address extends BaseEntity {
 
-    //TODO LATLNG
-
+    @Column
+    private Double latitude;
+    @Column
+    private Double longitude;
     @Column
     private String street;
     @Column
