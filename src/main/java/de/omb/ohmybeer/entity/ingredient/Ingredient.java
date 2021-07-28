@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.entity.ingredient;
 
-import de.omb.ohmybeer.entity.base.BaseEntity;
+import de.omb.ohmybeer.entity._base.BaseEntity;
 import de.omb.ohmybeer.enums.Language;
 
 import javax.persistence.ElementCollection;

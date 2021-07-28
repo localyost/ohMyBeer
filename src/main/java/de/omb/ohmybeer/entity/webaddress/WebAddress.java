@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.entity.webaddress;
 
-import de.omb.ohmybeer.entity.base.BaseEntity;
+import de.omb.ohmybeer.entity._base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

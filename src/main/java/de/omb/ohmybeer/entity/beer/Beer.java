@@ -1,16 +1,14 @@
 package de.omb.ohmybeer.entity.beer;
 
-import de.omb.ohmybeer.entity.base.BaseEntity;
+import de.omb.ohmybeer.entity._base.BaseEntity;
+import de.omb.ohmybeer.entity.beertype.BeerType;
 import de.omb.ohmybeer.entity.ingredient.Ingredient;
 import de.omb.ohmybeer.enums.Fermentation;
 import de.omb.ohmybeer.enums.Language;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,9 +38,8 @@ public class Beer extends BaseEntity {
     private double gravity;
     @Column
     private double alcoholContent;
-   /*
-    @Column  TODO make an Enum
+    @OneToOne
     private BeerType beerType;
-    */
+
 
 }

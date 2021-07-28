@@ -1,4 +1,4 @@
-package de.omb.ohmybeer.entity.base;
+package de.omb.ohmybeer.entity._base;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

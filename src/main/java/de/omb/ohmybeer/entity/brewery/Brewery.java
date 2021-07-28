@@ -1,16 +1,14 @@
 package de.omb.ohmybeer.entity.brewery;
 
+import de.omb.ohmybeer.entity._base.BaseEntity;
 import de.omb.ohmybeer.entity.address.Address;
-import de.omb.ohmybeer.entity.base.BaseEntity;
+import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.webaddress.WebAddress;
 import de.omb.ohmybeer.enums.Language;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,4 +28,6 @@ public class Brewery extends BaseEntity {
     private Set<String> photos;
     @ElementCollection
     private Map<Language, String> information;
+    @OneToMany
+    private Set<Beer> beers;
 }
