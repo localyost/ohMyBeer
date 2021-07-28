@@ -1,10 +1,14 @@
 package de.omb.ohmybeer.entity.restaurant;
 
-import java.util.List;
+import de.omb.ohmybeer.entity.base.GenericService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface RestaurantService {
-    Restaurant addRestaurant(Restaurant restaurant);
-    List<Restaurant> getAll();
-    Restaurant getOne(Long id);
-    void deleteOne(Long id);
+@Service
+public class RestaurantService extends GenericService<Restaurant, Long, RestaurantRepository> {
+
+    @Autowired
+    public RestaurantService(RestaurantRepository restaurantRepository) {
+        super(restaurantRepository);
+    }
 }

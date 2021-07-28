@@ -45,15 +45,15 @@ public class RestaurantController {
 
         Address address = restaurant.getAddress();
         if (address != null) {
-            addressService.addAddress(address);
+            addressService.create(address);
         }
 
         WebAddress webAddress = restaurant.getWebAddress();
         if(webAddress != null) {
-            webAddressService.addWebAddress(webAddress);
+            webAddressService.create(webAddress);
         }
 
-        return restaurantService.addRestaurant(restaurant);
+        return restaurantService.create(restaurant);
     }
 
     @DeleteMapping("/{id}")
