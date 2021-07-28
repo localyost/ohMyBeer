@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class GenericService<Entity extends BaseEntity, ID extends Serializable, Repository extends JpaRepository<Entity, ID>> {
 
-    private final Repository repository;
+    protected final Repository repository;
 
     public GenericService(Repository repository) {
         this.repository = repository;
@@ -16,6 +16,8 @@ public abstract class GenericService<Entity extends BaseEntity, ID extends Seria
     public Entity create(Entity entity) {
         return repository.save(entity);
     }
+
+    public Entity save(Entity entity) { return repository.save(entity); }
 
     public List<Entity> getAll() {
         return repository.findAll();

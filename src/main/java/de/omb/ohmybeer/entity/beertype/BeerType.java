@@ -1,16 +1,16 @@
 package de.omb.ohmybeer.entity.beertype;
 
 import de.omb.ohmybeer.entity._base.BaseEntity;
-import de.omb.ohmybeer.enums.Language;
+import lombok.Data;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.util.Map;
 
 @Entity
+@Data
 public class BeerType extends BaseEntity {
 
-    @ElementCollection
-    private Map<Language, String> name;
+    @Column
+    private String name;
 
 }
