@@ -12,13 +12,8 @@ public class BreweryService extends GenericService<Brewery, Long, BreweryReposit
         super(repository);
     }
 
-    public Brewery findOrCreate(String breweryName) {
-        Brewery brewery = repository.getByName(breweryName);
-        if (brewery == null) {
-            brewery = new Brewery();
-            brewery.setName(breweryName);
-            repository.save(brewery);
-        }
-        return brewery;
+    public Brewery getByName(String name) {
+        return repository.getByName(name);
     }
+
 }

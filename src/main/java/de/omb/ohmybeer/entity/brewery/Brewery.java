@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class Brewery extends BaseEntity {
-    @Column
+    @Column(nullable = false)
     private String name;
     @Column
     private String logo;

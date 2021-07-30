@@ -17,21 +17,23 @@ import java.util.Set;
 @Data
 public class Beer extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     private String name;
     @ElementCollection
     private Set<String> photos;
 
     @ElementCollection
-    @Column(name = "information", columnDefinition = "text")
-    private Map<Language, String> information;
+    @Column(name = "description", columnDefinition = "text")
+    private Map<Language, String> description;
     @ElementCollection
     private Map<Language, String> foodPairing;
     @ManyToMany
     private Set<Ingredient> ingredients;
     @Column
     private Fermentation fermentation;
-    @OneToOne
+    @Column
+    private String color;
+    @OneToOne()
     private Brewery brewery;
 
 
@@ -42,12 +44,12 @@ public class Beer extends BaseEntity {
     private Double gravity;
     @Column
     private Double alcoholContent;
-    @OneToOne
+    @OneToOne()
     private BeerType beerType;
 
-    public void setInformation(Language language, String information) {
-        if(this.information == null) { this.information = new HashMap<>(); }
-        this.information.put(language, information);
+    public void setDescription(Language language, String information) {
+        if(this.description == null) { this.description = new HashMap<>(); }
+        this.description.put(language, information);
     }
 
     public void setFoodPairing(Language language, String text) {

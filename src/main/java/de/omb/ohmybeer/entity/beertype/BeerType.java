@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Data
 public class BeerType extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
 }

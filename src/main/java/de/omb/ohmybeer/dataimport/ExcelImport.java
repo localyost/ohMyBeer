@@ -1,5 +1,7 @@
 package de.omb.ohmybeer.dataimport;
 
+import de.omb.ohmybeer.dataimport.excel.ExcelColumn;
+import de.omb.ohmybeer.dataimport.excel.ExcelParsingMap;
 import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.beer.BeerService;
 import de.omb.ohmybeer.entity.beertype.BeerType;
@@ -18,15 +20,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class ExcelImport {
@@ -50,116 +47,140 @@ public class ExcelImport {
         this.ingredientService = ingredientService;
     }
 
-    public void start() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource("imports/beer.xlsx");
+    public void parseExcelMap(File importFile) {
         try {
-            if (url != null) {
-                Path path = Paths.get(url.toURI());
-                FileInputStream fis = new FileInputStream(path.toFile());
-                Workbook workbook = new XSSFWorkbook(fis);
-                Sheet sheet = workbook.getSheetAt(0);
-                int rowIndex = 0;
-                for(Row row : sheet) {
-                    if (rowIndex > 0) {
-                        Beer beer = createBeer(row.getCell(1));
-                        System.out.println(rowIndex + " --> "+beer.getName());
-                        Brewery brewery = initBrewery(row.getCell(0));
-                        beer.setBrewery(brewery);
-                        BeerType beerType = initBeerType(row.getCell(2));
-                        beer.setBeerType(beerType);
-                        if (row.getCell(3) != null) {
-                            String information = row.getCell(3).getStringCellValue();
-                            beer.setInformation(Language.de, information);
-                        }
-                        if (row.getCell(4) != null) {
-                            Set<Ingredient> ingredients = initIngredients(row.getCell(4));
-                            beer.setIngredients(ingredients);
-                        }
-                        if (row.getCell(5) != null) {
-                            beer.setFoodPairing(Language.de, row.getCell(5).getStringCellValue());
-                        }
-                        if (row.getCell(6) != null) {
-                            beer.setFermentation(getFermentationType(row.getCell(6)));
-                        }
-                        if (row.getCell(7) != null) {
-                            // TODO COlOR
-                        }
-                        if (row.getCell(8) != null) {
-                            doubleFromPercent(row.getCell(8)).ifPresent(beer::setAlcoholContent);
-                        }
-                        if (row.getCell(9) != null) {
-                            doubleFromPercent(row.getCell(9)).ifPresent(beer::setGravity);
-                        }
-                        if (row.getCell(10) != null) {
-                            getIBU(row.getCell(10)).ifPresent(beer::setIbu);
-                        }
-
-                        beerService.save(beer);
-
-                    }
-
-                   rowIndex++;
+            FileInputStream fis = new FileInputStream(importFile);
+            Workbook workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(0);
+            final List<ExcelParsingMap> elementsToParse = new ArrayList<>();
+            int rowIndex = 0;
+            for(Row row : sheet) {
+                int HEADERS_ROW = 0;
+                if (rowIndex > HEADERS_ROW) {
+                    ExcelParsingMap parsingMap = new ExcelParsingMap();
+                    EnumSet.allOf(ExcelColumn.class).forEach(column -> {
+                        parsingMap.addElement(column, row);
+                    });
+                    elementsToParse.add(parsingMap);
                 }
+                rowIndex++;
             }
-        } catch (IOException | URISyntaxException e) {
+            buildEntities(elementsToParse);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private Brewery initBrewery(Cell cell) {
-       return breweryService.findOrCreate(cell.getStringCellValue());
+    public void buildEntities(List<ExcelParsingMap> elementsToParse) {
+        elementsToParse.forEach(parsingMap -> {
+            Beer beer = createBeer(parsingMap);
+            Brewery brewery = createBrewery(parsingMap);
+            BeerType beerType = createBeerType(parsingMap);
+            Set<Ingredient> ingredients = createIngredients(parsingMap);
+            persist(beer, brewery, beerType, ingredients);
+        });
     }
 
-    public Beer createBeer(Cell cell) {
-        Beer beer = new Beer();
-        beer.setName(cell.getStringCellValue());
-        return beer;
-    }
+    private void persist(Beer beer, Brewery brewery, BeerType beerType, Set<Ingredient> ingredients) {
+        Brewery persistedBrewery = breweryService.getByName(brewery.getName());
+        if (persistedBrewery == null) {
+            persistedBrewery = breweryService.create(brewery);
+        }
+        BeerType persistedBeerType = beerTypeService.getByName(beerType.getName());
+        if (persistedBeerType == null) {
+            persistedBeerType = beerTypeService.create(beerType);
+        }
 
-    public BeerType initBeerType(Cell cell) {
-       return beerTypeService.findOrCreate(cell.getStringCellValue());
-    }
-
-    public Set<Ingredient> initIngredients(Cell cell){
-        Set<Ingredient> ingredients = new HashSet<>();
-        String ingredientString = cell.getStringCellValue();
-        String[] arry = ingredientString.split(",");
-        for (String s : arry) {
-            String trimmed = s.trim();
-            Ingredient ingredient = ingredientService.getByName(trimmed);
-            if (ingredient == null) {
-                ingredient = new Ingredient();
-                ingredient.setName(trimmed);
-                ingredient.addLabel(Language.de, trimmed);
-                ingredientService.save(ingredient);
+        if (ingredients != null) {
+            Set<Ingredient> persistedIngredients = new HashSet<>();
+            for (Ingredient ingredient : ingredients) {
+                Ingredient persistedIngredient = ingredientService.getByName(ingredient.getName());
+                persistedIngredients.add(persistedIngredient != null ? persistedIngredient : ingredientService.create(ingredient));
             }
-
-            ingredients.add(ingredient);
+            beer.setIngredients(persistedIngredients);
         }
-        return ingredients;
+
+        beer.setBeerType(persistedBeerType);
+        beer.setBrewery(persistedBrewery);
+        beerService.create(beer);
     }
 
-    public Fermentation getFermentationType(Cell cell) {
-        String deType = cell.getStringCellValue();
-        if (deType.equals("obergärig")) {
-            return Fermentation.TOP;
-        }
-        if (deType.equals("untergärig")) {
-            return Fermentation.BOTTOM;
+    private Brewery createBrewery(ExcelParsingMap map) {
+        Optional<Object> value = map.get(ExcelColumn.breweryName);
+        Brewery brewery = new Brewery();
+        brewery.setName(value.get().toString());
+        return brewery;
+    }
+
+    private Beer createBeer(ExcelParsingMap map) {
+        Optional<Object> beerName = map.get(ExcelColumn.beerName);
+        Optional<Object> description = map.get(ExcelColumn.description);
+        Optional<Object> foodPairing = map.get(ExcelColumn.foodPairing);
+        Optional<Object> fermentation = map.get(ExcelColumn.fermentation);
+        Optional<Object> alcoholContent = map.get(ExcelColumn.alcoholContent);
+        Optional<Object> gravity = map.get(ExcelColumn.gravity);
+        Optional<Object> colorObt = map.get(ExcelColumn.color);
+        Optional<Object> ibuObt = map.get(ExcelColumn.ibu);
+        if (beerName.isPresent()) {
+            Beer beer = new Beer();
+            beer.setName(beerName.get().toString());
+            description.ifPresent(desc -> beer.setDescription(Language.de, desc.toString()));
+            foodPairing.ifPresent(pairing -> beer.setFoodPairing(Language.de, pairing.toString()));
+            fermentation.ifPresent(fermType -> beer.setFermentation(getFermentationType(fermType.toString())));
+            alcoholContent.ifPresent(content -> beer.setAlcoholContent(doubleFromPercent(content.toString())));
+            gravity.ifPresent(g -> beer.setGravity(doubleFromPercent(g.toString())));
+            ibuObt.ifPresent(ibu -> {
+                double ibuDbl = (double) ibu;
+                beer.setIbu((int)ibuDbl);
+            });
+            colorObt.ifPresent(color -> beer.setColor(color.toString()));
+            return beer;
         }
         return null;
     }
 
-    public Optional<Double> doubleFromPercent(Cell cell) {
-        String percent = cell.getStringCellValue().split("%")[0];
-        Double value = Double.parseDouble(percent);
-        return Optional.of(value);
+    private BeerType createBeerType(ExcelParsingMap map) {
+        Optional<Object> value = map.get(ExcelColumn.beerType);
+        BeerType beerType = new BeerType();
+        beerType.setName(value.get().toString());
+        return beerType;
+    }
+
+    private Set<Ingredient> createIngredients(ExcelParsingMap map){
+        Optional<Object> ingredientsObt = map.get(ExcelColumn.ingredients);
+        if (ingredientsObt.isPresent()) {
+            Set<Ingredient> ingredients = new HashSet<>();
+            String[] arry = ingredientsObt.get().toString().split(",");
+            for (String s : arry) {
+                String trimmed = s.trim();
+                Ingredient ingredient = new Ingredient();
+                ingredient.setName(trimmed);
+                ingredient.addLabel(Language.de, trimmed);
+                ingredients.add(ingredient);
+            }
+            return ingredients;
+        }
+        return null;
     }
 
     public Optional<Integer> getIBU(Cell cell) {
         double value = cell.getNumericCellValue();
         return Optional.of((int)value);
+    }
+
+    private Fermentation getFermentationType(String fermentation) {
+        if (fermentation.equals("obergärig")) {
+            return Fermentation.TOP;
+        }
+        if (fermentation.equals("untergärig")) {
+            return Fermentation.BOTTOM;
+        }
+        return null;
+    }
+
+    private Double doubleFromPercent(String stringParse) {
+        String percent = stringParse.split("%")[0];
+        return Double.parseDouble(percent);
     }
 
 }

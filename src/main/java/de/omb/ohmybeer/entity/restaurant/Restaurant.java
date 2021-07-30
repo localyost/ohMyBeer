@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 public class Restaurant extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     private String name;
     @Column
     private String logo;

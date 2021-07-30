@@ -12,13 +12,8 @@ public class BeerTypeService extends GenericService<BeerType, Long, BeerTypeRepo
         super(repository);
     }
 
-    public BeerType findOrCreate(String name) {
-        BeerType beerType = repository.getByName(name);
-        if (beerType == null) {
-            beerType = new BeerType();
-            beerType.setName(name);
-            repository.save(beerType);
-        }
-        return beerType;
+    public BeerType getByName(String name) {
+        return repository.getByName(name);
     }
+
 }
