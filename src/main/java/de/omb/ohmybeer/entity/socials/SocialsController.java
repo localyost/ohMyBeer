@@ -1,6 +1,7 @@
 package de.omb.ohmybeer.entity.socials;
 
 import de.omb.ohmybeer.entity.base.AbstractController;
+import de.omb.ohmybeer.entity.base.AbstractDTO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,5 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SocialsController extends AbstractController<Socials, SocialsRepository, SocialsService> {
     protected SocialsController(SocialsService service) {
         super(service);
+    }
+
+    @Override
+    protected AbstractDTO<Socials> createDTO(Socials entity) {
+        return new SocialsDTO(entity);
     }
 }

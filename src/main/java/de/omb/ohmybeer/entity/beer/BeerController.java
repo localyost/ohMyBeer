@@ -1,6 +1,7 @@
 package de.omb.ohmybeer.entity.beer;
 
 import de.omb.ohmybeer.entity.base.AbstractController;
+import de.omb.ohmybeer.entity.base.AbstractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,5 +13,10 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
 
     @Autowired
     public BeerController(BeerService beerService) { super(beerService); }
+
+    @Override
+    protected AbstractDTO<Beer> createDTO(Beer entity) {
+        return new BeerDTO(entity);
+    }
 
 }

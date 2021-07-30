@@ -1,6 +1,7 @@
 package de.omb.ohmybeer.entity.ingredient;
 
 import de.omb.ohmybeer.entity.base.AbstractController;
+import de.omb.ohmybeer.entity.base.AbstractDTO;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,5 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class IngredientController extends AbstractController<Ingredient, IngredientRepository, IngredientService> {
 
     protected IngredientController(IngredientService service) { super(service); }
+
+    @Override
+    protected AbstractDTO<Ingredient> createDTO(Ingredient entity) {
+        return new IngredientDTO(entity);
+    }
 
 }

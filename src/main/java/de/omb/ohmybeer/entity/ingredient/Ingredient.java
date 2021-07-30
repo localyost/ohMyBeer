@@ -17,14 +17,14 @@ import java.util.Map;
 public class Ingredient extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Map<Language, String> label;
+    private Map<Language, String> labels;
     @Column
     @NotNull
     private String name;
 
     public void addLabel(Language language, String label) {
-        if (this.label == null) { this.label = new HashMap<>(); }
-        this.label.put(language, label);
+        if (this.labels == null) { this.labels = new HashMap<>(); }
+        this.labels.put(language, label);
     }
 
 }

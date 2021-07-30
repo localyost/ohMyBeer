@@ -5,26 +5,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class AbstractController<Entity extends BaseEntity, Repository extends JpaRepository<Entity, Long>, Service extends GenericService<Entity, Long, Repository>> {
+    protected Service service;
 
     protected AbstractController(Service service) {
         this.service = service;
     }
-    protected Service service;
+
+    protected abstract AbstractDTO<Entity> createDTO(Entity entity);
 
     @GetMapping
-    public List<Entity> getAll() {
+    public List<AbstractDTO<Entity>> getAll() {
         return onGetAll();
     }
 
     @GetMapping("/{id}")
-    public Entity getOne(@PathVariable Long id) {
+    public AbstractDTO<Entity> getOne(@PathVariable Long id) {
         return onGetOne(id);
     }
 
     @PostMapping
-    public Entity createOne(Entity entity) {
+    public AbstractDTO<Entity> createOne(Entity entity) {
         return onCreateOne(entity);
     }
 
@@ -34,26 +37,26 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     }
 
     @PutMapping
-    public Entity updateOne(Entity entity) {
+    public AbstractDTO<Entity> updateOne(Entity entity) {
         return onUpdate(entity);
     }
 
-    protected List<Entity> onGetAll() {
-        return service.getAll();
+    protected List<AbstractDTO<Entity>> onGetAll() {
+        return service.getAll().stream().map(this::createDTO).collect(Collectors.toList());
     }
-    protected Entity onGetOne(Long id) {
-        return service.getOne(id);
+    protected AbstractDTO<Entity> onGetOne(Long id) {
+        return createDTO(service.getOne(id));
     }
 
-    protected Entity onCreateOne(Entity entity) {
-        return service.create(entity);
+    protected AbstractDTO<Entity> onCreateOne(Entity entity) {
+        return createDTO(service.create(entity));
     }
 
     protected void onDelete(Set<Long> ids) {
         service.delete(ids);
     }
 
-    protected Entity onUpdate(Entity entity) {
-        return service.save(entity);
+    protected AbstractDTO<Entity> onUpdate(Entity entity) {
+        return createDTO(service.save(entity));
     }
 }

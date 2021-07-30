@@ -3,6 +3,7 @@ package de.omb.ohmybeer.entity.restaurant;
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.address.AddressService;
 import de.omb.ohmybeer.entity.base.AbstractController;
+import de.omb.ohmybeer.entity.base.AbstractDTO;
 import de.omb.ohmybeer.entity.socials.Socials;
 import de.omb.ohmybeer.entity.socials.SocialsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,12 @@ public class RestaurantController extends AbstractController<Restaurant, Restaur
     }
 
     @Override
-    protected Restaurant onCreateOne(Restaurant restaurant) {
+    protected AbstractDTO<Restaurant> createDTO(Restaurant entity) {
+        return new RestaurantDTO(entity);
+    }
+
+    @Override
+    protected AbstractDTO<Restaurant> onCreateOne(Restaurant restaurant) {
         Address address = restaurant.getAddress();
         if (address != null) {
             addressService.create(address);
@@ -37,7 +43,7 @@ public class RestaurantController extends AbstractController<Restaurant, Restaur
         if(socials != null) {
             socialsService.create(socials);
         }
-        return service.create(restaurant);
+        return createDTO(service.create(restaurant));
     }
 
 }
