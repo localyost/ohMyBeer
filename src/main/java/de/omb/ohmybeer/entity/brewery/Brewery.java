@@ -31,7 +31,7 @@ public class Brewery extends BaseEntity {
     private Set<String> photos;
     @ElementCollection
     private Map<Language, String> information;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     private Set<Beer> beers;
 
     public void addBeer(Beer beer) {
