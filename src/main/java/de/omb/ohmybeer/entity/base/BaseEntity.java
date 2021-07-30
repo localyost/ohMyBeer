@@ -1,4 +1,4 @@
-package de.omb.ohmybeer.entity._base;
+package de.omb.ohmybeer.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Hidden;

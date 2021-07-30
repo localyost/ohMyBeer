@@ -1,7 +1,7 @@
 package de.omb.ohmybeer.entity.brewery;
 
-import de.omb.ohmybeer.entity._base.BaseEntity;
 import de.omb.ohmybeer.entity.address.Address;
+import de.omb.ohmybeer.entity.base.BaseEntity;
 import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.webaddress.WebAddress;
 import de.omb.ohmybeer.enums.Language;

@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.entity.beer;
 
-import de.omb.ohmybeer.entity._base.GenericService;
+import de.omb.ohmybeer.entity.base.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.entity.beertype;
 
-import de.omb.ohmybeer.entity._base.BaseEntity;
+import de.omb.ohmybeer.entity.base.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;

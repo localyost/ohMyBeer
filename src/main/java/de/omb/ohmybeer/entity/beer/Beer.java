@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.entity.beer;
 
-import de.omb.ohmybeer.entity._base.BaseEntity;
+import de.omb.ohmybeer.entity.base.BaseEntity;
 import de.omb.ohmybeer.entity.beertype.BeerType;
 import de.omb.ohmybeer.entity.brewery.Brewery;
 import de.omb.ohmybeer.entity.ingredient.Ingredient;
