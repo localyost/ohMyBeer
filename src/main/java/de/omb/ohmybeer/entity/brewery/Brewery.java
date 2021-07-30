@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +31,11 @@ public class Brewery extends BaseEntity {
     private Set<String> photos;
     @ElementCollection
     private Map<Language, String> information;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Beer> beers;
+
+    public void addBeer(Beer beer) {
+        if (beers == null) { beers = new HashSet<>(); }
+        beers.add(beer);
+    }
 }

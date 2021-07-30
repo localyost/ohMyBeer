@@ -102,7 +102,10 @@ public class ExcelImport {
 
         beer.setBeerType(persistedBeerType);
         beer.setBrewery(persistedBrewery);
-        beerService.create(beer);
+        Beer persistedBeer = beerService.create(beer);
+        persistedBrewery.addBeer(persistedBeer);
+        breweryService.save(persistedBrewery);
+
     }
 
     private Brewery createBrewery(ExcelParsingMap map) {
