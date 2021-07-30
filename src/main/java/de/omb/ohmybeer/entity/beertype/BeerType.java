@@ -5,12 +5,14 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
 public class BeerType extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
 
 }

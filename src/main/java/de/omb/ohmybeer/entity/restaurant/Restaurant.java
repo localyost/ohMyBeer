@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +20,8 @@ import java.util.Set;
 @Getter
 public class Restaurant extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
     @Column
     private String logo;

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,8 @@ public class Ingredient extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Map<Language, String> label;
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
 
     public void addLabel(Language language, String label) {

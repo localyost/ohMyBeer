@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public abstract class GenericService<Entity extends BaseEntity, ID extends Serializable, Repository extends JpaRepository<Entity, ID>> {
 
@@ -13,10 +14,12 @@ public abstract class GenericService<Entity extends BaseEntity, ID extends Seria
         this.repository = repository;
     }
 
-    public Entity create(Entity entity) {
-        return repository.save(entity);
+    public List<Entity> create(Set<Entity> entities) {
+        return repository.saveAll(entities);
     }
+    public Entity create(Entity entity) { return repository.save(entity); }
 
+    public List<Entity> save(Set<Entity> entities) { return repository.saveAll(entities); }
     public Entity save(Entity entity) { return repository.save(entity); }
 
     public List<Entity> getAll() {
@@ -27,7 +30,6 @@ public abstract class GenericService<Entity extends BaseEntity, ID extends Seria
         return repository.getById(id);
     }
 
-    public void deleteOne(ID id) {
-        repository.deleteById(id);
-    }
+    public void delete(Set<ID> ids) { repository.deleteAllByIdInBatch(ids); }
+    public void delete(ID id) { repository.deleteById(id); }
 }

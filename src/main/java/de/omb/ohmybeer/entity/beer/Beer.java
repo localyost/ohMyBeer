@@ -9,6 +9,7 @@ import de.omb.ohmybeer.enums.Language;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,8 @@ import java.util.Set;
 @Data
 public class Beer extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
     @ElementCollection
     private Set<String> photos;
