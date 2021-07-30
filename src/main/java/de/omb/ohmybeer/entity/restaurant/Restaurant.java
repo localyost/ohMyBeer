@@ -2,7 +2,7 @@ package de.omb.ohmybeer.entity.restaurant;
 
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.BaseEntity;
-import de.omb.ohmybeer.entity.webaddress.WebAddress;
+import de.omb.ohmybeer.entity.socials.Socials;
 import de.omb.ohmybeer.enums.Language;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class Restaurant extends BaseEntity {
     @OneToOne
     private Address address;
     @OneToOne
-    private WebAddress webAddress;
+    private Socials socials;
     @ElementCollection
     private Set<String> photos;
     @ElementCollection

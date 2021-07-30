@@ -3,8 +3,8 @@ package de.omb.ohmybeer.entity.restaurant;
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.address.AddressService;
 import de.omb.ohmybeer.entity.base.AbstractController;
-import de.omb.ohmybeer.entity.webaddress.WebAddress;
-import de.omb.ohmybeer.entity.webaddress.WebAddressService;
+import de.omb.ohmybeer.entity.socials.Socials;
+import de.omb.ohmybeer.entity.socials.SocialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController extends AbstractController<Restaurant, RestaurantRepository, RestaurantService> {
 
     AddressService addressService;
-    WebAddressService webAddressService;
+    SocialsService socialsService;
 
     @Autowired
     public RestaurantController(
             RestaurantService restaurantService,
             AddressService addressService,
-            WebAddressService webAddressService) {
+            SocialsService socialsService) {
         super(restaurantService);
         this.addressService = addressService;
-        this.webAddressService = webAddressService;
+        this.socialsService = socialsService;
     }
 
     @Override
@@ -33,9 +33,9 @@ public class RestaurantController extends AbstractController<Restaurant, Restaur
         if (address != null) {
             addressService.create(address);
         }
-        WebAddress webAddress = restaurant.getWebAddress();
-        if(webAddress != null) {
-            webAddressService.create(webAddress);
+        Socials socials = restaurant.getSocials();
+        if(socials != null) {
+            socialsService.create(socials);
         }
         return service.create(restaurant);
     }

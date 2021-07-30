@@ -1,4 +1,4 @@
-package de.omb.ohmybeer.entity.webaddress;
+package de.omb.ohmybeer.entity.socials;
 
 import de.omb.ohmybeer.entity.base.BaseEntity;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 @Setter
 @Getter
-public class WebAddress extends BaseEntity {
+public class Socials extends BaseEntity {
 
     @Column
     private String website;
