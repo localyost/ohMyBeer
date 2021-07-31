@@ -17,8 +17,8 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     protected abstract AbstractDTO<Entity> createDTO(Entity entity);
 
     @GetMapping
-    public List<AbstractDTO<Entity>> getAll(@RequestParam int start, @RequestParam int end) {
-        return onGetAll(start, end);
+    public List<AbstractDTO<Entity>> getAll(@RequestParam int page, @RequestParam int size) {
+        return onGetAll(page, size);
     }
 
     @GetMapping("/{id}")
@@ -41,9 +41,9 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
         return onUpdate(entity);
     }
 
-    protected List<AbstractDTO<Entity>> onGetAll(int start, int end) {
-        boolean hasParams = start + end > 0;
-        List<Entity> entities = hasParams ?  service.getAll(start, end) : service.getAll();
+    protected List<AbstractDTO<Entity>> onGetAll(int page, int size) {
+        boolean hasParams = page + size > 0;
+        List<Entity> entities = hasParams ?  service.getAll(page, size) : service.getAll();
         return entities.stream().map(this::createDTO).collect(Collectors.toList());
     }
     protected AbstractDTO<Entity> onGetOne(Long id) {

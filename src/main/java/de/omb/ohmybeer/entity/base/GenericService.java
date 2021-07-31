@@ -29,8 +29,8 @@ public abstract class GenericService<Entity extends BaseEntity, ID extends Seria
     public Entity save(Entity entity) { return repository.save(entity); }
 
     public List<Entity> getAll() { return repository.findAll(); }
-    public List<Entity> getAll(int start, int end) {
-        PageRequest pageRequest = PageRequest.of(start, end);
+    public List<Entity> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository.findAll(pageRequest).getContent();
     }
 
