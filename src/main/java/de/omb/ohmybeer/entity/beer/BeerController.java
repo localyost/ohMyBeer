@@ -16,7 +16,11 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
 
     @Override
     protected AbstractDTO<Beer> createDTO(Beer entity) {
-        return new BeerDTO(entity);
+        return new BeerDTO(entity).setProperties();
     }
 
+    @Override
+    protected AbstractDTO<Beer> buildFetchManyDTO(Beer entity) {
+        return new BeerDTO(entity).setBasicFields();
+    }
 }

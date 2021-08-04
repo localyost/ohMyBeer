@@ -15,6 +15,6 @@ public class SocialsController extends AbstractController<Socials, SocialsReposi
 
     @Override
     protected AbstractDTO<Socials> createDTO(Socials entity) {
-        return new SocialsDTO(entity);
+        return new SocialsDTO(entity).setProperties();
     }
 }

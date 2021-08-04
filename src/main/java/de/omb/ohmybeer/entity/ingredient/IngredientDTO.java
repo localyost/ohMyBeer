@@ -16,7 +16,8 @@ public class IngredientDTO extends AbstractDTO<Ingredient> {
     }
 
     @Override
-    protected void setFields(Ingredient entity) {
+    protected AbstractDTO<Ingredient> setProperties() {
         labels = entity.getLabels();
+        return this;
     }
 }

@@ -24,12 +24,13 @@ public class RestaurantDTO extends AbstractDTO<Restaurant> {
     }
 
     @Override
-    protected void setFields(Restaurant entity) {
+    protected AbstractDTO<Restaurant> setProperties() {
         name = entity.getName();
         logo = entity.getLogo();
         address = entity.getAddress();
         socials = entity.getSocials();
         photos = entity.getPhotos();
         information = entity.getInformation();
+        return this;
     }
 }

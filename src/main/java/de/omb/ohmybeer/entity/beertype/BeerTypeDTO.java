@@ -13,7 +13,8 @@ public class BeerTypeDTO extends AbstractDTO<BeerType> {
     }
 
     @Override
-    protected void setFields(BeerType entity) {
+    protected AbstractDTO<BeerType> setProperties() {
         name = entity.getName();
+        return this;
     }
 }

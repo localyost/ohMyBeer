@@ -16,10 +16,11 @@ public class SocialsDTO extends AbstractDTO<Socials> {
     }
 
     @Override
-    protected void setFields(Socials entity) {
+    protected AbstractDTO<Socials> setProperties() {
         website = entity.getWebsite();
         facebook = entity.getFacebook();
         instagram = entity.getInstagram();
         twitter = entity.getTwitter();
+        return this;
     }
 }

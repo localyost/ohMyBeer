@@ -2,12 +2,12 @@ package de.omb.ohmybeer.entity.base;
 
 public abstract class AbstractDTO<Entity extends BaseEntity> {
 
-    private Entity entity;
+    protected final Entity entity;
 
     protected AbstractDTO(Entity entity) {
-        setFields(entity);
+        this.entity = entity;
     }
 
-    protected abstract void setFields(Entity entity);
+    protected abstract AbstractDTO<Entity> setProperties();
 
 }

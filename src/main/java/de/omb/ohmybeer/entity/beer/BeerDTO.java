@@ -30,7 +30,7 @@ public class BeerDTO extends AbstractDTO<Beer> {
     }
 
     @Override
-    protected void setFields(Beer entity) {
+    protected BeerDTO setProperties() {
         name = entity.getName();
         photos = entity.getPhotos();
         description = entity.getDescription();
@@ -43,5 +43,18 @@ public class BeerDTO extends AbstractDTO<Beer> {
         gravity = entity.getGravity();
         alcoholContent = entity.getAlcoholContent();
         beerType = entity.getBeerType().getName();
+        return this;
+    }
+
+    public BeerDTO setBasicFields() {
+        name = entity.getName();
+        photos = entity.getPhotos();
+        fermentation = entity.getFermentation();
+        color = entity.getColor();
+        ibu = entity.getIbu();
+        gravity = entity.getGravity();
+        alcoholContent = entity.getAlcoholContent();
+        beerType = entity.getBeerType().getName();
+        return this;
     }
 }

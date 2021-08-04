@@ -25,13 +25,13 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
     }
 
     @Override
-    protected void setFields(Brewery entity) {
+    protected AbstractDTO<Brewery> setProperties() {
         name = entity.getName();
         logo = entity.getLogo();
         address = entity.getAddress();
         socials = entity.getSocials();
         photos = entity.getPhotos();
         information = entity.getInformation();
-//        beerIds = entity.getBeers().stream().map(Beer::getId).collect(Collectors.toSet());
+        return this;
     }
 }

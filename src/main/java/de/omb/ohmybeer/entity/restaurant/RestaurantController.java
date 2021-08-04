@@ -30,7 +30,7 @@ public class RestaurantController extends AbstractController<Restaurant, Restaur
 
     @Override
     protected AbstractDTO<Restaurant> createDTO(Restaurant entity) {
-        return new RestaurantDTO(entity);
+        return new RestaurantDTO(entity).setProperties();
     }
 
     @Override

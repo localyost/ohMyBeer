@@ -14,7 +14,7 @@ public class IngredientController extends AbstractController<Ingredient, Ingredi
 
     @Override
     protected AbstractDTO<Ingredient> createDTO(Ingredient entity) {
-        return new IngredientDTO(entity);
+        return new IngredientDTO(entity).setProperties();
     }
 
 }
