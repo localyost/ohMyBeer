@@ -2,12 +2,14 @@ package de.omb.ohmybeer.entity.brewery;
 
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.AbstractDTO;
+import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.socials.Socials;
 import de.omb.ohmybeer.enums.Language;
 import lombok.Getter;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 public class BreweryDTO extends AbstractDTO<Brewery> {
@@ -32,6 +34,7 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
         socials = entity.getSocials();
         photos = entity.getPhotos();
         information = entity.getInformation();
+        beerIds = entity.getBeers().stream().map(Beer::getId).collect(Collectors.toSet());
         return this;
     }
 }
