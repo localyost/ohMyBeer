@@ -25,36 +25,24 @@ public class BeerDTO extends AbstractDTO<Beer> {
     private Double alcoholContent;
     private String beerType;
 
-    protected BeerDTO(Beer entity) {
-        super(entity);
+
+    protected BeerDTO(Beer entity, String[] fetchProps) {
+        super(entity, fetchProps);
     }
 
     @Override
-    protected BeerDTO setProperties() {
-        name = entity.getName();
-        photos = entity.getPhotos();
-        description = entity.getDescription();
-        foodPairing = entity.getFoodPairing();
-        ingredients = entity.getIngredients();
-        fermentation = entity.getFermentation();
-        color = entity.getColor();
-        breweryId = entity.getBrewery().getId();
-        ibu = entity.getIbu();
-        gravity = entity.getGravity();
-        alcoholContent = entity.getAlcoholContent();
-        beerType = entity.getBeerType().getName();
-        return this;
-    }
-
-    public BeerDTO setBasicFields() {
-        name = entity.getName();
-        photos = entity.getPhotos();
-        fermentation = entity.getFermentation();
-        color = entity.getColor();
-        ibu = entity.getIbu();
-        gravity = entity.getGravity();
-        alcoholContent = entity.getAlcoholContent();
-        beerType = entity.getBeerType().getName();
-        return this;
+    protected void setProperties() {
+        this.isFilterProperty("name", beer -> this.name = beer.getName());
+        this.isFilterProperty("photos", beer -> this.photos = beer.getPhotos());
+        this.isFilterProperty("description", beer -> this.description = beer.getDescription());
+        this.isFilterProperty("foodPairing", beer -> this.foodPairing = beer.getFoodPairing());
+        this.isFilterProperty("ingredients", beer -> this.ingredients = beer.getIngredients());
+        this.isFilterProperty("fermentation", beer -> this.fermentation = beer.getFermentation());
+        this.isFilterProperty("color", beer -> this.color = beer.getColor());
+        this.isFilterProperty("brewery", beer -> this.breweryId = beer.getBrewery().getId());
+        this.isFilterProperty("ibu", beer -> this.ibu = beer.getIbu());
+        this.isFilterProperty("gravity", beer -> this.gravity = beer.getGravity());
+        this.isFilterProperty("alcoholContent", beer -> this.alcoholContent = beer.getAlcoholContent());
+        this.isFilterProperty("beerType", beer -> this.beerType = beer.getBeerType().getName());
     }
 }

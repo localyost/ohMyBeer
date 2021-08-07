@@ -22,19 +22,18 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
     private Map<Language, String> information;
     private Set<Long> beerIds;
 
-    public BreweryDTO(Brewery entity) {
-        super(entity);
+    public BreweryDTO(Brewery entity, String[] fetchProps) {
+        super(entity, fetchProps);
     }
 
     @Override
-    protected AbstractDTO<Brewery> setProperties() {
-        name = entity.getName();
-        logo = entity.getLogo();
-        address = entity.getAddress();
-        socials = entity.getSocials();
-        photos = entity.getPhotos();
-        information = entity.getInformation();
-        beerIds = entity.getBeers().stream().map(Beer::getId).collect(Collectors.toSet());
-        return this;
+    protected void setProperties() {
+        this.isFilterProperty("name", brewery -> this.name = brewery.getName());
+        this.isFilterProperty("logo", brewery -> this.logo = brewery.getLogo());
+        this.isFilterProperty("address", brewery -> this.address = brewery.getAddress());
+        this.isFilterProperty("socials", brewery -> this.socials = brewery.getSocials());
+        this.isFilterProperty("photos", brewery -> this.photos = brewery.getPhotos());
+        this.isFilterProperty("information", brewery -> this.information = brewery.getInformation());
+        this.isFilterProperty("beerIds", brewery -> this.beerIds = brewery.getBeers().stream().map(Beer::getId).collect(Collectors.toSet()));
     }
 }

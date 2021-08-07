@@ -20,7 +20,7 @@ public class AddressDTO extends AbstractDTO<Address> {
     }
 
     @Override
-    protected AbstractDTO<Address> setProperties() {
+    protected void setProperties() {
         latitude = entity.getLatitude();
         longitude = entity.getLongitude();
         street = entity.getStreet();
@@ -28,6 +28,5 @@ public class AddressDTO extends AbstractDTO<Address> {
         postcode = entity.getPostcode();
         city = entity.getCity();
         country = entity.getCountry();
-        return this;
     }
 }

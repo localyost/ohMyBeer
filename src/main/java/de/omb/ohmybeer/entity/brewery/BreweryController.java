@@ -15,8 +15,8 @@ public class BreweryController extends AbstractController<Brewery, BreweryReposi
     }
 
     @Override
-    protected AbstractDTO<Brewery> createDTO(Brewery entity) {
-        return new BreweryDTO(entity).setProperties();
+    protected AbstractDTO<Brewery> createDTO(Brewery entity, String[] fetchProps) {
+        return new BreweryDTO(entity, fetchProps);
     }
 
 }

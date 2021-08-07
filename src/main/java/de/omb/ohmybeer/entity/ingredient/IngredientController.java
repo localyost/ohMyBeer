@@ -13,8 +13,8 @@ public class IngredientController extends AbstractController<Ingredient, Ingredi
     protected IngredientController(IngredientService service) { super(service); }
 
     @Override
-    protected AbstractDTO<Ingredient> createDTO(Ingredient entity) {
-        return new IngredientDTO(entity).setProperties();
+    protected AbstractDTO<Ingredient> createDTO(Ingredient entity, String[] fetchProps) {
+        return new IngredientDTO(entity);
     }
 
 }

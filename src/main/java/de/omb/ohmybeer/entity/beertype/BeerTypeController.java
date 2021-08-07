@@ -13,8 +13,8 @@ public class BeerTypeController extends AbstractController<BeerType, BeerTypeRep
     protected BeerTypeController(BeerTypeService service) { super(service); }
 
     @Override
-    protected AbstractDTO<BeerType> createDTO(BeerType entity) {
-        return new BeerTypeDTO(entity).setProperties();
+    protected AbstractDTO<BeerType> createDTO(BeerType entity, String[] fetchProps) {
+        return new BeerTypeDTO(entity);
     }
 
 }

@@ -14,7 +14,7 @@ public class AddressController extends AbstractController<Address, AddressReposi
     }
 
     @Override
-    protected AbstractDTO<Address> createDTO(Address entity) {
-        return new AddressDTO(entity).setProperties();
+    protected AbstractDTO<Address> createDTO(Address entity, String[] fetchProps) {
+        return new AddressDTO(entity);
     }
 }
