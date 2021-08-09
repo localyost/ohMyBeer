@@ -1,6 +1,7 @@
 package de.omb.ohmybeer.entity.beer;
 
 import de.omb.ohmybeer.entity.base.AbstractDTO;
+import de.omb.ohmybeer.entity.brewery.BreweryDTO;
 import de.omb.ohmybeer.entity.ingredient.Ingredient;
 import de.omb.ohmybeer.enums.Fermentation;
 import de.omb.ohmybeer.enums.Language;
@@ -19,7 +20,7 @@ public class BeerDTO extends AbstractDTO<Beer> {
     private Set<Ingredient> ingredients;
     private Fermentation fermentation;
     private String color;
-    private Long breweryId;
+    private BreweryDTO brewery;
     private Integer ibu;
     private Double gravity;
     private Double alcoholContent;
@@ -39,7 +40,7 @@ public class BeerDTO extends AbstractDTO<Beer> {
         this.isFilterProperty("ingredients", beer -> this.ingredients = beer.getIngredients());
         this.isFilterProperty("fermentation", beer -> this.fermentation = beer.getFermentation());
         this.isFilterProperty("color", beer -> this.color = beer.getColor());
-        this.isFilterProperty("brewery", beer -> this.breweryId = beer.getBrewery().getId());
+        this.isFilterProperty("brewery", beer -> this.brewery = new BreweryDTO(beer.getBrewery(), "name"));
         this.isFilterProperty("ibu", beer -> this.ibu = beer.getIbu());
         this.isFilterProperty("gravity", beer -> this.gravity = beer.getGravity());
         this.isFilterProperty("alcoholContent", beer -> this.alcoholContent = beer.getAlcoholContent());

@@ -22,7 +22,7 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
     private Map<Language, String> information;
     private Set<Long> beerIds;
 
-    public BreweryDTO(Brewery entity, String[] fetchProps) {
+    public BreweryDTO(Brewery entity, String... fetchProps) {
         super(entity, fetchProps);
     }
 
