@@ -4,6 +4,8 @@ import de.omb.ohmybeer.entity.base.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class BreweryService extends GenericService<Brewery, Long, BreweryRepository> {
 
@@ -14,6 +16,10 @@ public class BreweryService extends GenericService<Brewery, Long, BreweryReposit
 
     public Brewery getByName(String name) {
         return repository.getByName(name);
+    }
+
+    public Set<Brewery> searchBreweries(String search) {
+        return repository.findByNameStartsWithIgnoreCase(search);
     }
 
 }

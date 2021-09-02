@@ -22,7 +22,7 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     /*  End Points  */
 
     @GetMapping
-    public GetPayload<Entity> fetchMany(
+    public GetPayload<Entity> fetchMany (
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam(required = false) String[] props
@@ -31,7 +31,7 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     }
 
     @GetMapping("/{id}")
-    public AbstractDTO<Entity> fetchOne(
+    public AbstractDTO<Entity> fetchOne (
             @PathVariable Long id,
             @RequestParam(required = false) String[] props
     ) {
