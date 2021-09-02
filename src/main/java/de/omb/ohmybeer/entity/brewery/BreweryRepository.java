@@ -13,5 +13,5 @@ public interface BreweryRepository extends JpaRepository<Brewery, Long> {
     @Query("select brewery from Brewery as brewery where brewery.name = :name")
     Brewery getByName(@Param("name") String name);
 
-    Set<Brewery> findByNameStartsWithIgnoreCase(String title);
+    Set<Brewery> findByNameStartsWithIgnoreCase(String name);
 }

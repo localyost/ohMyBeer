@@ -39,7 +39,7 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     }
 
     @PostMapping
-    public AbstractDTO<Entity> createOne(Entity entity) {
+    public AbstractDTO<Entity> createOne(@RequestBody Entity entity) {
         return onCreateOne(entity);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     }
 
     @PutMapping
-    public AbstractDTO<Entity> updateOne(Entity entity) {
+    public AbstractDTO<Entity> updateOne(@RequestBody Entity entity) {
         return onUpdate(entity);
     }
 

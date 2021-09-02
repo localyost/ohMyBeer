@@ -10,6 +10,7 @@ import java.util.Map;
 public class IngredientDTO extends AbstractDTO<Ingredient> {
 
     private Map<Language, String> labels;
+    private String name;
 
     protected IngredientDTO(Ingredient entity) {
         super(entity);
@@ -18,5 +19,6 @@ public class IngredientDTO extends AbstractDTO<Ingredient> {
     @Override
     protected void setProperties() {
         labels = entity.getLabels();
+        name = entity.getName();
     }
 }
