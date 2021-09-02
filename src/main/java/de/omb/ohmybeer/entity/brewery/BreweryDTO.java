@@ -4,10 +4,9 @@ import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.AbstractDTO;
 import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.socials.Socials;
-import de.omb.ohmybeer.enums.Language;
+import de.omb.ohmybeer.entity.translation.Translation;
 import lombok.Getter;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,7 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
     private Address address;
     private Socials socials;
     private Set<String> photos;
-    private Map<Language, String> information;
+    private Translation information;
     private Set<Long> beerIds;
 
     public BreweryDTO(Brewery entity, String... fetchProps) {

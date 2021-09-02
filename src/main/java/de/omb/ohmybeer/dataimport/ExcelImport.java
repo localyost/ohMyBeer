@@ -10,9 +10,9 @@ import de.omb.ohmybeer.entity.brewery.Brewery;
 import de.omb.ohmybeer.entity.brewery.BreweryService;
 import de.omb.ohmybeer.entity.ingredient.Ingredient;
 import de.omb.ohmybeer.entity.ingredient.IngredientService;
+import de.omb.ohmybeer.entity.translation.Translation;
+import de.omb.ohmybeer.entity.translation.TranslationService;
 import de.omb.ohmybeer.enums.Fermentation;
-import de.omb.ohmybeer.enums.Language;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ExcelImport {
@@ -32,6 +33,7 @@ public class ExcelImport {
     private final BeerService beerService;
     private final BeerTypeService beerTypeService;
     private final IngredientService ingredientService;
+    private final TranslationService translationService;
 
 
     @Autowired
@@ -39,12 +41,14 @@ public class ExcelImport {
             BreweryService breweryService,
             BeerService beerService,
             BeerTypeService beerTypeService,
-            IngredientService ingredientService
+            IngredientService ingredientService,
+            TranslationService translationService
     ) {
         this.breweryService = breweryService;
         this.beerService = beerService;
         this.beerTypeService = beerTypeService;
         this.ingredientService = ingredientService;
+        this.translationService = translationService;
     }
 
     public void parseExcelMap(File importFile) {
@@ -72,48 +76,81 @@ public class ExcelImport {
     }
 
     public void buildEntities(List<ExcelParsingMap> elementsToParse) {
+        elementsToParse
+                .stream()
+                .map(excelParsingMap -> excelParsingMap.get(ExcelColumn.breweryName))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Object::toString)
+                .forEach(this::createBrewery);
+
+        elementsToParse
+                .stream()
+                .map(excelParsingMap -> excelParsingMap.get(ExcelColumn.beerType))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Object::toString)
+                .forEach(this::createBeerType);
+
+        elementsToParse
+                .stream()
+                .map(excelParsingMap -> excelParsingMap.get(ExcelColumn.ingredients))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Object::toString)
+                .forEach(this::createIngredient);
+
+        elementsToParse
+                .stream()
+                .map(excelParsingMap -> excelParsingMap.get(ExcelColumn.description))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(Object::toString);
+
         elementsToParse.forEach(parsingMap -> {
-            Beer beer = createBeer(parsingMap);
-            Brewery brewery = createBrewery(parsingMap);
-            BeerType beerType = createBeerType(parsingMap);
-            Set<Ingredient> ingredients = createIngredients(parsingMap);
-            persist(beer, brewery, beerType, ingredients);
+            createBeer(parsingMap);
         });
     }
 
-    private void persist(Beer beer, Brewery brewery, BeerType beerType, Set<Ingredient> ingredients) {
-        Brewery persistedBrewery = breweryService.getByName(brewery.getName());
-        if (persistedBrewery == null) {
-            persistedBrewery = breweryService.create(brewery);
-        }
-        BeerType persistedBeerType = beerTypeService.getByName(beerType.getName());
-        if (persistedBeerType == null) {
-            persistedBeerType = beerTypeService.create(beerType);
-        }
-
-        if (ingredients != null) {
-            Set<Ingredient> persistedIngredients = new HashSet<>();
-            for (Ingredient ingredient : ingredients) {
-                Ingredient persistedIngredient = ingredientService.getByName(ingredient.getName());
-                persistedIngredients.add(persistedIngredient != null ? persistedIngredient : ingredientService.create(ingredient));
+    private void createIngredient(String name) {
+        String[] arry = name.split(",");
+        List<String> explodedNames = Arrays.asList(arry);
+        for (String explodedName : explodedNames) {
+            String trimmed = explodedName.trim();
+            Ingredient ingredient = this.ingredientService.findByName(trimmed);
+            if (ingredient == null) {
+                ingredient = new Ingredient();
+                ingredient.setName(trimmed);
+                this.ingredientService.save(ingredient);
             }
-            beer.setIngredients(persistedIngredients);
+        }
+    }
+
+    private void createBeerType(String beerTypeName) {
+        String[] arry = beerTypeName.split(",");
+        List<String> explodedNames = Arrays.asList(arry);
+        for (String explodedName : explodedNames) {
+            String trimmed = explodedName.trim();
+            BeerType beerType = this.beerTypeService.getByName(trimmed);
+            if (beerType == null) {
+                beerType = new BeerType();
+                beerType.setName(trimmed);
+                this.beerTypeService.save(beerType);
+            }
         }
 
-        beer.setBeerType(persistedBeerType);
-        beer.setBrewery(persistedBrewery);
-        Beer persistedBeer = beerService.create(beer);
-        persistedBrewery.addBeer(persistedBeer);
-        breweryService.save(persistedBrewery);
-
     }
 
-    private Brewery createBrewery(ExcelParsingMap map) {
-        Optional<Object> value = map.get(ExcelColumn.breweryName);
-        Brewery brewery = new Brewery();
-        brewery.setName(value.get().toString());
-        return brewery;
+    private void createBrewery(String breweryName) {
+        String trimmed = breweryName.trim();
+        Brewery brewery = breweryService.getByName(trimmed);
+        if (brewery == null) {
+            brewery = new Brewery();
+            brewery.setName(trimmed);
+            breweryService.create(brewery);
+        }
     }
+
 
     private Beer createBeer(ExcelParsingMap map) {
         Optional<Object> beerName = map.get(ExcelColumn.beerName);
@@ -127,8 +164,21 @@ public class ExcelImport {
         if (beerName.isPresent()) {
             Beer beer = new Beer();
             beer.setName(beerName.get().toString());
-            description.ifPresent(desc -> beer.setDescription(Language.de, desc.toString()));
-            foodPairing.ifPresent(pairing -> beer.setFoodPairing(Language.de, pairing.toString()));
+
+            if (description.isPresent()) {
+                Translation translation = new Translation();
+                translation.setDe(description.get().toString());
+                translationService.create(translation);
+                beer.setDescription(translation);
+            }
+
+            if (foodPairing.isPresent()) {
+                Translation translation = new Translation();
+                translation.setDe(foodPairing.get().toString());
+                translationService.create(translation);
+                beer.setFoodPairing(translation);
+            }
+
             fermentation.ifPresent(fermType -> beer.setFermentation(getFermentationType(fermType.toString())));
             alcoholContent.ifPresent(content -> beer.setAlcoholContent(doubleFromPercent(content.toString())));
             gravity.ifPresent(g -> beer.setGravity(doubleFromPercent(g.toString())));
@@ -137,38 +187,36 @@ public class ExcelImport {
                 beer.setIbu((int)ibuDbl);
             });
             colorObt.ifPresent(color -> beer.setColor(color.toString()));
-            return beer;
-        }
-        return null;
-    }
 
-    private BeerType createBeerType(ExcelParsingMap map) {
-        Optional<Object> value = map.get(ExcelColumn.beerType);
-        BeerType beerType = new BeerType();
-        beerType.setName(value.get().toString());
-        return beerType;
-    }
+            map.get(ExcelColumn.beerType)
+                    .ifPresent(o -> {
+                        BeerType beerType = beerTypeService.getByName(o.toString().trim());
+                        beer.setBeerType(beerType);
+                    });
 
-    private Set<Ingredient> createIngredients(ExcelParsingMap map){
-        Optional<Object> ingredientsObt = map.get(ExcelColumn.ingredients);
-        if (ingredientsObt.isPresent()) {
-            Set<Ingredient> ingredients = new HashSet<>();
-            String[] arry = ingredientsObt.get().toString().split(",");
-            for (String s : arry) {
-                String trimmed = s.trim();
-                Ingredient ingredient = new Ingredient();
-                ingredient.setName(trimmed);
-                ingredient.addLabel(Language.de, trimmed);
-                ingredients.add(ingredient);
+            map.get(ExcelColumn.breweryName)
+                    .ifPresent(o -> {
+                        Brewery brewery = this.breweryService.getByName(o.toString().trim());
+                        if (brewery != null) {
+                            beer.setBrewery(brewery);
+                        }
+                    });
+
+            if (map.get(ExcelColumn.ingredients).isPresent()) {
+                String[] arry =  map.get(ExcelColumn.ingredients).get().toString().split(",");
+                List<String> explodedNames = Arrays.asList(arry);
+                Set<Ingredient> ingredients = explodedNames.stream()
+                        .map(String::trim)
+                        .map(ingredientService::findByName)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toSet());
+
+                beer.setIngredients(ingredients);
             }
-            return ingredients;
+
+            return this.beerService.create(beer);
         }
         return null;
-    }
-
-    public Optional<Integer> getIBU(Cell cell) {
-        double value = cell.getNumericCellValue();
-        return Optional.of((int)value);
     }
 
     private Fermentation getFermentationType(String fermentation) {

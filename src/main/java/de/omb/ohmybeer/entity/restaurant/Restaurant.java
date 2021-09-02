@@ -3,7 +3,7 @@ package de.omb.ohmybeer.entity.restaurant;
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.BaseEntity;
 import de.omb.ohmybeer.entity.socials.Socials;
-import de.omb.ohmybeer.enums.Language;
+import de.omb.ohmybeer.entity.translation.Translation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -31,8 +30,8 @@ public class Restaurant extends BaseEntity {
     private Socials socials;
     @ElementCollection
     private Set<String> photos;
-    @ElementCollection
-    private Map<Language, String> information;
+    @OneToOne
+    private Translation information;
 
 
 

@@ -1,15 +1,13 @@
 package de.omb.ohmybeer.entity.ingredient;
 
 import de.omb.ohmybeer.entity.base.AbstractDTO;
-import de.omb.ohmybeer.enums.Language;
+import de.omb.ohmybeer.entity.translation.Translation;
 import lombok.Getter;
-
-import java.util.Map;
 
 @Getter
 public class IngredientDTO extends AbstractDTO<Ingredient> {
 
-    private Map<Language, String> labels;
+    private Translation labels;
     private String name;
 
     protected IngredientDTO(Ingredient entity) {

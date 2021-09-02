@@ -15,7 +15,7 @@ public class BreweryService extends GenericService<Brewery, Long, BreweryReposit
     }
 
     public Brewery getByName(String name) {
-        return repository.getByName(name);
+        return repository.findByNameIgnoreCase(name);
     }
 
     public Set<Brewery> searchBreweries(String search) {

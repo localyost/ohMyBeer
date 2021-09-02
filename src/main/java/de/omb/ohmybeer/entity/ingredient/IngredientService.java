@@ -14,8 +14,8 @@ public class IngredientService extends GenericService<Ingredient, Long, Ingredie
         super(repository);
     }
 
-    public Ingredient getByName(String name) {
-        return repository.getByName(name);
+    public Ingredient findByName(String name) {
+        return repository.findByNameIgnoreCase(name);
     }
 
     public Set<Ingredient> findIngredientByName(String name) {

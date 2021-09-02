@@ -3,10 +3,9 @@ package de.omb.ohmybeer.entity.restaurant;
 import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.AbstractDTO;
 import de.omb.ohmybeer.entity.socials.Socials;
-import de.omb.ohmybeer.enums.Language;
+import de.omb.ohmybeer.entity.translation.Translation;
 import lombok.Getter;
 
-import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -17,7 +16,7 @@ public class RestaurantDTO extends AbstractDTO<Restaurant> {
     private Address address;
     private Socials socials;
     private Set<String> photos;
-    private Map<Language, String> information;
+    private Translation information;
 
     public RestaurantDTO(Restaurant entity) {
         super(entity);

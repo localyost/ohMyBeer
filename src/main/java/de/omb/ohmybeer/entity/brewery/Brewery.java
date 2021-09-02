@@ -4,14 +4,12 @@ import de.omb.ohmybeer.entity.address.Address;
 import de.omb.ohmybeer.entity.base.BaseEntity;
 import de.omb.ohmybeer.entity.beer.Beer;
 import de.omb.ohmybeer.entity.socials.Socials;
-import de.omb.ohmybeer.enums.Language;
+import de.omb.ohmybeer.entity.translation.Translation;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -29,13 +27,9 @@ public class Brewery extends BaseEntity {
     private Socials socials;
     @ElementCollection
     private Set<String> photos;
-    @ElementCollection
-    private Map<Language, String> information;
-    @OneToMany
+    @OneToOne
+    private Translation information;
+    @OneToMany(mappedBy = "brewery")
     private Set<Beer> beers;
 
-    public void addBeer(Beer beer) {
-        if (beers == null) { beers = new HashSet<>(); }
-        beers.add(beer);
-    }
 }
