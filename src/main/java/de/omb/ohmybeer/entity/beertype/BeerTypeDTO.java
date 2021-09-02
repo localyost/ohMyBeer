@@ -8,7 +8,7 @@ public class BeerTypeDTO extends AbstractDTO<BeerType> {
 
     private String name;
 
-    protected BeerTypeDTO(BeerType entity) {
+    public BeerTypeDTO(BeerType entity) {
         super(entity);
     }
 
