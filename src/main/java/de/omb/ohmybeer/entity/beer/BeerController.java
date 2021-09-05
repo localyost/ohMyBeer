@@ -18,7 +18,7 @@ import java.io.IOException;
 public class BeerController extends AbstractController<Beer, BeerRepository, BeerService> {
 
     @Autowired
-    public BeerController(BeerService beerService) { super(beerService); }
+    public BeerController(BeerService beerService) {super(beerService); }
 
     @Override
     protected AbstractDTO<Beer> createDTO(Beer entity, String[] fetchProps) {
@@ -34,4 +34,5 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(bytes);
     }
+
 }

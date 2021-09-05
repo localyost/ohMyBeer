@@ -10,7 +10,7 @@ public class IngredientDTO extends AbstractDTO<Ingredient> {
     private Translation labels;
     private String name;
 
-    protected IngredientDTO(Ingredient entity) {
+    public IngredientDTO(Ingredient entity) {
         super(entity);
     }
 

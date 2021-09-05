@@ -22,10 +22,10 @@ public class Beer extends BaseEntity {
     @ElementCollection
     private Set<String> photos;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Translation description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Translation foodPairing;
 
     @ManyToMany
