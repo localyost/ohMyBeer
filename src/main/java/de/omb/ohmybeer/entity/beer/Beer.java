@@ -45,7 +45,7 @@ public class Beer extends BaseEntity {
     private Double gravity;
     @Column
     private Double alcoholContent;
-    @ManyToOne
-    private BeerType beerType;
+    @ManyToMany
+    private Set<BeerType> beerTypes;
 
 }

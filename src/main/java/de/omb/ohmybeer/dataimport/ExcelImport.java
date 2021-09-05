@@ -131,7 +131,7 @@ public class ExcelImport {
         List<String> explodedNames = Arrays.asList(arry);
         for (String explodedName : explodedNames) {
             String trimmed = explodedName.trim();
-            BeerType beerType = this.beerTypeService.getByName(trimmed);
+            BeerType beerType = this.beerTypeService.findByName(trimmed);
             if (beerType == null) {
                 beerType = new BeerType();
                 beerType.setName(trimmed);
@@ -188,10 +188,16 @@ public class ExcelImport {
             });
             colorObt.ifPresent(color -> beer.setColor(color.toString()));
 
-            map.get(ExcelColumn.beerType)
-                    .ifPresent(o -> {
-                        BeerType beerType = beerTypeService.getByName(o.toString().trim());
-                        beer.setBeerType(beerType);
+            map.get(ExcelColumn.beerType).ifPresent(o -> {
+                        String[] arry =  map.get(ExcelColumn.beerType).get().toString().split(",");
+                        List<String> explodedNames = Arrays.asList(arry);
+                        Set<BeerType> beerTypes = explodedNames.stream()
+                                .map(String::trim)
+                                .map(beerTypeService::findByName)
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toSet());
+
+                        beer.setBeerTypes(beerTypes);
                     });
 
             map.get(ExcelColumn.breweryName)

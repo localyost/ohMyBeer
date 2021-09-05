@@ -26,7 +26,7 @@ public class BeerDTO extends AbstractDTO<Beer> {
     private Integer ibu;
     private Double gravity;
     private Double alcoholContent;
-    private BeerTypeDTO beerType;
+    private Set<BeerTypeDTO> beerTypes;
 
 
     protected BeerDTO(Beer entity, String[] fetchProps) {
@@ -48,7 +48,9 @@ public class BeerDTO extends AbstractDTO<Beer> {
         this.isFilterProperty("ibu", beer -> this.ibu = beer.getIbu());
         this.isFilterProperty("gravity", beer -> this.gravity = beer.getGravity());
         this.isFilterProperty("alcoholContent", beer -> this.alcoholContent = beer.getAlcoholContent());
-        this.isFilterProperty("beerType", beer -> this.beerType = new BeerTypeDTO(beer.getBeerType()));
+        this.isFilterProperty("beerTypes", beer -> this.beerTypes = beer.getBeerTypes()
+                .stream().map(BeerTypeDTO::new)
+                .collect(Collectors.toSet()));
     }
 
     private TranslationDTO getTranslation(Translation translation) {
