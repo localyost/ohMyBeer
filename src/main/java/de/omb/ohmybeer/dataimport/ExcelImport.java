@@ -168,14 +168,14 @@ public class ExcelImport {
             if (description.isPresent()) {
                 Translation translation = new Translation();
                 translation.setDe(description.get().toString());
-                translationService.create(translation);
+//                translationService.create(translation);
                 beer.setDescription(translation);
             }
 
             if (foodPairing.isPresent()) {
                 Translation translation = new Translation();
                 translation.setDe(foodPairing.get().toString());
-                translationService.create(translation);
+//                translationService.create(translation);
                 beer.setFoodPairing(translation);
             }
 

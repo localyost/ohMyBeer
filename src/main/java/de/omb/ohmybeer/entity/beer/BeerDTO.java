@@ -4,6 +4,7 @@ import de.omb.ohmybeer.entity.base.AbstractDTO;
 import de.omb.ohmybeer.entity.beertype.BeerTypeDTO;
 import de.omb.ohmybeer.entity.brewery.BreweryDTO;
 import de.omb.ohmybeer.entity.ingredient.IngredientDTO;
+import de.omb.ohmybeer.entity.translation.Translation;
 import de.omb.ohmybeer.entity.translation.TranslationDTO;
 import de.omb.ohmybeer.enums.Fermentation;
 import lombok.Getter;
@@ -36,8 +37,8 @@ public class BeerDTO extends AbstractDTO<Beer> {
     protected void setProperties() {
         this.isFilterProperty("name", beer -> this.name = beer.getName());
         this.isFilterProperty("photos", beer -> this.photos = beer.getPhotos());
-        this.isFilterProperty("description", beer -> this.description = new TranslationDTO(beer.getDescription()));
-        this.isFilterProperty("foodPairing", beer -> this.foodPairing = new TranslationDTO(beer.getFoodPairing()));
+        this.isFilterProperty("description", beer -> this.description = getTranslation(beer.getDescription()));
+        this.isFilterProperty("foodPairing", beer -> this.foodPairing = getTranslation(beer.getFoodPairing()));
         this.isFilterProperty("ingredients", beer -> this.ingredients = beer.getIngredients()
                 .stream().map(IngredientDTO::new).
                 collect(Collectors.toSet()));
@@ -48,5 +49,11 @@ public class BeerDTO extends AbstractDTO<Beer> {
         this.isFilterProperty("gravity", beer -> this.gravity = beer.getGravity());
         this.isFilterProperty("alcoholContent", beer -> this.alcoholContent = beer.getAlcoholContent());
         this.isFilterProperty("beerType", beer -> this.beerType = new BeerTypeDTO(beer.getBeerType()));
+    }
+
+    private TranslationDTO getTranslation(Translation translation) {
+        return translation != null ?
+                new TranslationDTO(translation) :
+                null;
     }
 }

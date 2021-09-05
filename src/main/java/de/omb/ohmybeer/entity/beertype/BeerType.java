@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class BeerType extends BaseEntity {
 
-    @Column
+    @Column(unique = true)
     @NotNull
     private String name;
 

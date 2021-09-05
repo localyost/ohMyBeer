@@ -16,7 +16,7 @@ public class Ingredient extends BaseEntity {
     @OneToOne
     private Translation labels;
 
-    @Column
+    @Column(unique = true)
     @NotNull
     private String name;
 
