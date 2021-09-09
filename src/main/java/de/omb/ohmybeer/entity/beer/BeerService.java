@@ -18,8 +18,7 @@ public class BeerService extends GenericService<Beer, Long, BeerRepository> {
         super(repository);
     }
 
-
-    public boolean uploadImages(long id, MultipartFile[] files) {
+    public boolean saveImages(long id, MultipartFile[] files) {
         final Beer beer = repository.getById(id);
         try {
             File directory = Path.of("beerImages").resolve(beer.getId().toString()).toFile();
@@ -27,21 +26,44 @@ public class BeerService extends GenericService<Beer, Long, BeerRepository> {
                 directory.mkdirs();
             }
             for (MultipartFile file : files) {
-                String fileName = beer.getName().toLowerCase().replace(" ", "_");
-                fileName = fileName +"__"+ file.getOriginalFilename();
+                String fileName = this.getImageName(beer, file);
                 Path resolve = directory.toPath().resolve(fileName);
                 if (resolve.toFile().exists()) {
                     resolve.toFile().delete();
                 }
                 Files.copy(file.getInputStream(), resolve);
-                String photoPath = beer.getId().toString() + "/" + fileName;
+                String photoPath = getImageName(beer, fileName);
                 beer.addPhoto(photoPath);
             }
             repository.save(beer);
+            return true;
         } catch (IOException e) {
             System.out.println(e);
+            return false;
         }
+    }
 
-        return true;
+    public boolean deleteImage(Long id, String imageName) {
+        final Beer beer = repository.getById(id);
+        File image = Path.of("beerImages").resolve(beer.getId().toString()).resolve(imageName).toFile();
+        if (image.exists()) {
+            if (image.delete()) {
+                String photoPath = getImageName(beer, imageName);
+                beer.getPhotos().remove(photoPath);
+                repository.save(beer);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getImageName(Beer beer, String imageName) {
+        return beer.getId().toString() + "/" + imageName;
+    }
+
+    private String getImageName(Beer beer, MultipartFile file) {
+        return beer
+                .getName().toLowerCase()
+                .replace(" ", "_")+"__"+file.getOriginalFilename();
     }
 }

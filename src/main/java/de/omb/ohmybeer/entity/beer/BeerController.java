@@ -23,9 +23,14 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
         return new BeerDTO(entity, fetchProps);
     }
 
-    @PostMapping(value = "/{id}/image")
+    @PostMapping(value = "/image/{id}")
     public boolean submitImage(@PathVariable Long id, @RequestParam MultipartFile[] files) {
-        return service.uploadImages(id, files);
+        return service.saveImages(id, files);
+    }
+
+    @DeleteMapping(value = "/image/{id}/{imageName}")
+    public boolean deleteImage(@PathVariable String imageName, @PathVariable Long id) {
+        return service.deleteImage(id, imageName);
     }
 
     @GetMapping(value = "/image/{id}/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
