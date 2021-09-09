@@ -44,7 +44,7 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
     }
 
     @DeleteMapping("/{id}")
-    public void delete(Long id) {
+    public void delete(@PathVariable Long id) {
         onDelete(Set.of(id));
     }
 

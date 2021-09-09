@@ -3,15 +3,13 @@ package de.omb.ohmybeer.entity.beer;
 import de.omb.ohmybeer.entity.base.AbstractController;
 import de.omb.ohmybeer.entity.base.AbstractDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping(value = "/v1/beers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,14 +23,15 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
         return new BeerDTO(entity, fetchProps);
     }
 
-    @GetMapping(value = "/image", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getImage() throws IOException {
-        var imgFile = new ClassPathResource("static/6beers.png");
-        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(bytes);
+    @PostMapping(value = "/{id}/image")
+    public boolean submitImage(@PathVariable Long id, @RequestParam MultipartFile[] files) {
+        return service.uploadImages(id, files);
+    }
+
+    @GetMapping(value = "/image/{id}/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImage(@PathVariable String id, @PathVariable String imageName) throws IOException {
+        Path imagePath = Path.of("beerImages").resolve(id).resolve(imageName);
+        return Files.readAllBytes(imagePath);
     }
 
 }
