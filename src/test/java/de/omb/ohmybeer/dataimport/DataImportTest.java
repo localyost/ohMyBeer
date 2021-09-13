@@ -20,6 +20,6 @@ class DataImportTest {
         ClassLoader classLoader = getClass().getClassLoader();
         URL url = classLoader.getResource("imports/beer.xlsx");
         Path path = Paths.get(url.toURI());
-        excelImport.parseExcelMap(path.toFile());
+        excelImport.run(path.toFile());
     }
 }

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class BreweryDTO extends AbstractDTO<Brewery> {
 
     private String name;
+    private String legalEntity;
     private String logo;
     private Address address;
     private Socials socials;
@@ -28,6 +29,7 @@ public class BreweryDTO extends AbstractDTO<Brewery> {
     @Override
     protected void setProperties() {
         this.isFilterProperty("name", brewery -> this.name = brewery.getName());
+        this.isFilterProperty("legalEntity", brewery -> this.legalEntity = brewery.getLegalEntity());
         this.isFilterProperty("logo", brewery -> this.logo = brewery.getLogo());
         this.isFilterProperty("address", brewery -> this.address = brewery.getAddress());
         this.isFilterProperty("socials", brewery -> this.socials = brewery.getSocials());

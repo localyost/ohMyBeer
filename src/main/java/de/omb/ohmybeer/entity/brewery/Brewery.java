@@ -20,14 +20,16 @@ public class Brewery extends BaseEntity {
     @NotNull
     private String name;
     @Column
+    private String legalEntity;
+    @Column
     private String logo;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Socials socials;
     @ElementCollection
     private Set<String> photos;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Translation information;
     @OneToMany(mappedBy = "brewery")
     private Set<Beer> beers;

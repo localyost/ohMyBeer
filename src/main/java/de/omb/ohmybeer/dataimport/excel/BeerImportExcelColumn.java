@@ -1,6 +1,6 @@
 package de.omb.ohmybeer.dataimport.excel;
 
-public enum ExcelColumn {
+public enum BeerImportExcelColumn {
     breweryName,
     beerName,
     beerType,
