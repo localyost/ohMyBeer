@@ -38,7 +38,6 @@ public class BeerService extends GenericService<Beer, Long, BeerRepository> {
             repository.save(beer);
             return true;
         } catch (IOException e) {
-            System.out.println(e);
             return false;
         }
     }

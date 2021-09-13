@@ -24,7 +24,7 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
     }
 
     @PostMapping(value = "/image/{id}")
-    public boolean submitImage(@PathVariable Long id, @RequestParam MultipartFile[] files) {
+    public boolean submitImages(@PathVariable Long id, @RequestParam MultipartFile[] files) {
         return service.saveImages(id, files);
     }
 
@@ -34,9 +34,14 @@ public class BeerController extends AbstractController<Beer, BeerRepository, Bee
     }
 
     @GetMapping(value = "/image/{id}/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] getImage(@PathVariable String id, @PathVariable String imageName) throws IOException {
-        Path imagePath = Path.of("beerImages").resolve(id).resolve(imageName);
-        return Files.readAllBytes(imagePath);
+    public @ResponseBody byte[] getImage(@PathVariable String id, @PathVariable String imageName) {
+        try {
+            Path imagePath = Path.of("beerImages").resolve(id).resolve(imageName);
+            return Files.readAllBytes(imagePath);
+        } catch (IOException e) {
+            return new byte[]{};
+        }
+
     }
 
 }
