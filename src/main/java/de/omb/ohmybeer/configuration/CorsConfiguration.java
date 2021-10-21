@@ -20,7 +20,7 @@ public class CorsConfiguration {
                         HttpMethod.POST.name(),
                         HttpMethod.GET.name(),
                         HttpMethod.OPTIONS.name()
-                ).allowedOrigins("http://localhost:4200");
+                ).allowedOrigins("http://localhost:4200", "https://admin.oh-my.beer:443");
             }
         };
     }

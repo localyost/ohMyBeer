@@ -11,4 +11,8 @@ public class RestaurantService extends GenericService<Restaurant, Long, Restaura
     public RestaurantService(RestaurantRepository restaurantRepository) {
         super(restaurantRepository);
     }
+
+    public Restaurant getByName(String name) {
+        return repository.findByNameIgnoreCase(name);
+    }
 }

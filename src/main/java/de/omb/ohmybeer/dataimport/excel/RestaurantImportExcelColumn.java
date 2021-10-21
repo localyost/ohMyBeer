@@ -1,7 +1,7 @@
 package de.omb.ohmybeer.dataimport.excel;
 
-public enum BreweryImportExcelColumn {
-    breweryName,
+public enum RestaurantImportExcelColumn {
+    name,
     latitude,
     longitude,
     street,
@@ -13,7 +13,10 @@ public enum BreweryImportExcelColumn {
     facebook,
     instagram,
     twitter,
-    info,
-    legal,
-    ombTip,
+    type,
+    beers,
+    signatureBeer,
+    text,
+    ombTip
+
 }

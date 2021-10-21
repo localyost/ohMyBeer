@@ -12,13 +12,14 @@ import de.omb.ohmybeer.entity.ingredient.Ingredient;
 import de.omb.ohmybeer.entity.ingredient.IngredientService;
 import de.omb.ohmybeer.entity.translation.Translation;
 import de.omb.ohmybeer.enums.Fermentation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class BeerImport {
 
     private final BreweryService breweryService;
@@ -26,21 +27,7 @@ public class BeerImport {
     private final BeerTypeService beerTypeService;
     private final IngredientService ingredientService;
 
-    @Autowired
-    public BeerImport(
-            BreweryService breweryService,
-            BeerService beerService,
-            BeerTypeService beerTypeService,
-            IngredientService ingredientService
-    ) {
-        this.breweryService = breweryService;
-        this.beerService = beerService;
-        this.beerTypeService = beerTypeService;
-        this.ingredientService = ingredientService;
-    }
-
     public void run(List<ExcelParsingMap> elementsToParse) {
-        System.out.println(elementsToParse);
         elementsToParse
                 .stream()
                 .map(excelParsingMap -> excelParsingMap.get(BeerImportExcelColumn.breweryName))
@@ -124,8 +111,10 @@ public class BeerImport {
         Optional<Object> colorObt = map.get(BeerImportExcelColumn.color);
         Optional<Object> ibuObt = map.get(BeerImportExcelColumn.ibu);
         if (beerName.isPresent()) {
-            Beer beer = new Beer();
-            beer.setName(beerName.get().toString());
+            String name = beerName.get().toString().trim();
+            Optional<Beer> beerOptional = Optional.ofNullable(beerService.getByName(name));
+            Beer beer = beerOptional.orElseGet(Beer::new);
+            beer.setName(name);
 
             if (description.isPresent()) {
                 Translation translation = new Translation();

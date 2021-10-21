@@ -33,5 +33,6 @@ public class Brewery extends BaseEntity {
     private Translation information;
     @OneToMany(mappedBy = "brewery")
     private Set<Beer> beers;
-
+    @Column
+    private boolean ombRecommend;
 }

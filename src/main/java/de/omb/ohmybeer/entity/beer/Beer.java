@@ -20,6 +20,7 @@ public class Beer extends BaseEntity {
     @Column
     @NotNull
     private String name;
+
     @ElementCollection
     private Set<String> photos;
 

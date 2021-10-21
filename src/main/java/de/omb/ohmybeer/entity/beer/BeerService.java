@@ -42,6 +42,8 @@ public class BeerService extends GenericService<Beer, Long, BeerRepository> {
         }
     }
 
+    public Beer getByName(String name) {return repository.findByNameIgnoreCase(name);}
+
     public boolean deleteImage(Long id, String imageName) {
         final Beer beer = repository.getById(id);
         File image = Path.of("beerImages").resolve(beer.getId().toString()).resolve(imageName).toFile();
@@ -65,4 +67,5 @@ public class BeerService extends GenericService<Beer, Long, BeerRepository> {
                 .getName().toLowerCase()
                 .replace(" ", "_")+"__"+file.getOriginalFilename();
     }
+
 }
