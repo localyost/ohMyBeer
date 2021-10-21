@@ -3,11 +3,9 @@ package de.omb.webapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
-@ComponentScan("de.omb.entity")
+@SpringBootApplication(scanBasePackages = "de.omb")
 @EntityScan("de.omb.entity")
 @EnableJpaRepositories("de.omb.entity")
 public class WebApiApplication {
