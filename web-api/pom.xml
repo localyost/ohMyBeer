@@ -6,9 +6,9 @@
         <artifactId>OhMyBeer</artifactId>
         <groupId>de.omb</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <artifactId>web-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>web-api</name>
@@ -18,9 +18,16 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <type>pom</type>
+            <version>2.4.0</version>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
             <groupId>de.omb</groupId>
             <artifactId>core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
