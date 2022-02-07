@@ -11,7 +11,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -51,10 +50,4 @@ public class Beer extends BaseEntity {
     private Double alcoholContent;
     @ManyToMany
     private Set<BeerType> beerTypes;
-
-    public void addPhoto(String path) {
-        if (this.photos == null) { this.photos = new HashSet<>(); }
-        this.photos.add(path);
-    }
-
 }
