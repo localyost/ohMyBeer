@@ -2,6 +2,7 @@ package de.omb.webapi.controller.base;
 
 import de.omb.entity.base.BaseEntity;
 import de.omb.entity.base.GenericService;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,15 @@ public abstract class AbstractController<Entity extends BaseEntity, Repository e
 
     @GetMapping
     public GetPayload<Entity> fetchMany (
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam(required = false) String[] props
+            @RequestParam
+            @Parameter(example = "0")
+            int page,
+            @RequestParam
+            @Parameter(example = "20")
+            int size,
+            @RequestParam(required = false) String[] fields
     ) {
-        return onFetchMany(page, size, props);
+        return onFetchMany(page, size, fields);
     }
 
     @GetMapping("/{id}")

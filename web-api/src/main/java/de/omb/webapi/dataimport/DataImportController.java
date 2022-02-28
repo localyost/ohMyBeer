@@ -26,7 +26,7 @@ public class DataImportController {
     @GetMapping()
     public void start() throws URISyntaxException {
         ClassLoader classLoader = getClass().getClassLoader();
-        URL url = classLoader.getResource("imports/beer.xlsx");
+        URL url = classLoader.getResource("imports/Bierflaschen-Datenbank.xlsx");
         Path path = Paths.get(url.toURI());
         this.excelImport.run(path.toFile());
     }
