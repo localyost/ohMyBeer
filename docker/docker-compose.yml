@@ -12,14 +12,17 @@ services:
       - ../db/init.sh:/docker-entrypoint-initdb.d/init.sh
     ports:
       - "5432:5432"
-    networks:
-      - postgres
     restart: unless-stopped
   minio:
     container_name: minio_container
-    image: minio/minio
-    networks:
-      - postgres
+    image: bitnami/minio:latest
+    environment:
+      MINIO_ACCESS_KEY: 'access'
+      MINIO_SECRET_KEY: 'superSecretPassword'
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    restart: unless-stopped
 
 
 networks:

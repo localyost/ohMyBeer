@@ -32,7 +32,7 @@ public abstract class GenericService<Entity extends BaseEntity, ID extends Seria
 
     public Page<Entity> getAll(int page, int size) {
         Sort defaultSort = Sort.by(Sort.Direction.DESC, "updated");
-        PageRequest pageRequest = PageRequest.of(page, size, defaultSort);
+        PageRequest pageRequest = PageRequest.of(page, size);
         return repository.findAll(pageRequest);
     }
 

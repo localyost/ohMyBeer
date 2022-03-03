@@ -14,6 +14,11 @@ public abstract class AbstractDTO<Entity extends BaseEntity> {
     protected final Entity entity;
     private List<String> fetchSelectProps;
 
+    /**
+     * DTO for Entities,
+     * @param entity - the entity
+     * @param fetchProps - if set, will only return those properties lazily, otherwise fetch the entity eagerly.
+     */
     protected AbstractDTO(Entity entity, String[] fetchProps) {
         this.entity = entity;
         this.id = entity.getId();
